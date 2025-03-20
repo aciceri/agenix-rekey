@@ -86,7 +86,7 @@ let
       # For master identies with no explicit pubkey, try extracting a pubkey from the file first.
       # Collect final identity arguments for encryption in an array.
       masterIdentityArgs=()
-      # shellcheck disable=SC2041,SC2043
+      # shellcheck disable=SC2041,SC2043,SC2016
       for file in ${
         concatStringsSep " " (
           map (x: "${escapeShellArg x.identity}") (filter (x: x.pubkey == null) mergedMasterIdentities)
@@ -177,6 +177,7 @@ let
         if [[ -n "''${AGENIX_REKEY_PRIMARY_IDENTITY:-}" ]] && [[ "''${AGENIX_REKEY_PRIMARY_IDENTITY_ONLY:-}" == true ]]; then
           ${envPath} ${ageProgram} -d "''${primaryIdentityArgs[@]}" "''${@:2}"
         else
+	  # shellcheck disable=SC2016
           ${envPath} ${ageProgram} -d "''${primaryIdentityArgs[@]}" ${decryptionMasterIdentityArgs} "''${@:2}"
         fi
       fi
